@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>User Page</title>
+    <title>Admin Page</title>
 </head>
 <style>
     table {
@@ -31,7 +31,11 @@
     <input type="submit" value="Logout" />
 </form><br>
 
-<h1>User Info</h1>
+<form th:action="@{/user}" method="get">
+    <input type="submit" value="User Info" />
+</form><br>
+
+<h1>User List</h1>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -41,17 +45,22 @@
         <th>Last Name</th>
         <th>Email</th>
         <th>Roles</th>
+        <th>Edit</th>
+        <th>Delete</th>
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr th:each="user : ${users}">
         <td th:text="${user.id}"></td>
         <td th:text="${user.firstName}"></td>
         <td th:text="${user.lastName}"></td>
         <td th:text="${user.email}"></td>
         <td th:text="${user.roles}"></td>
+        <td><a th:href="@{/admin/edit(id=${user.id})}">Edit</a></td>
+        <td><a th:href="@{/admin/delete(id=${user.id})}">Delete</a></td>
     </tr>
     </tbody>
+    <a th:href="@{/admin/add_user}">Add User</a>
 </table>
 
 </body>
