@@ -60,9 +60,10 @@ public class AdminController {
 
     @GetMapping("/edit")
     public String editUser(@RequestParam("id") @ModelAttribute Long id, Model model) throws Exception {
-        model.addAttribute("editUserForm", new User());
+        User user = userService.getUserById(id);
         model.addAttribute("id", id);
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", user);
+        model.addAttribute("editUserForm", user);
         List<Role> roles = (List<Role>) roleRepository.findAll();
         model.addAttribute("allRoles", roles);
         return "edit";
