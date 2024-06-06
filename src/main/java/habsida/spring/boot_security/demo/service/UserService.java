@@ -20,7 +20,7 @@ public interface UserService {
 
     public User getUserByEmail(String email);
 
-    public void updateUserById(Long id, String firstName, String lastName, String email, String password, Set<Role> roles);
+    public void updateUser(User user);
 
     public void deleteUserById(Long id);
 }

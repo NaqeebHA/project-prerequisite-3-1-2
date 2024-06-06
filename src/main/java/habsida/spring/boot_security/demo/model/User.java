@@ -58,6 +58,14 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public void fromUserDTO(UserDTO userDto) {
+        this.firstName = userDto.getFirstName();
+        this.lastName = userDto.getLastName();
+        this.email = userDto.getEmail();
+        this.password = userDto.getPassword();
+        this.roles = userDto.getRoles();
+    }
+
     public Long getId() {
         return id;
     }

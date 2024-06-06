@@ -60,17 +60,17 @@
     <a>Id : </a><a th:text="${id}"></a><br>
     <div>
         <label for="firstName">First Name</label><br>
-        <input type="text" placeholder="e.g. John" th:field="*{firstName}">
+        <input type="text" th:field="*{firstName}">
         <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}"></p>
     </div>
     <div>
         <label for="lastName">Last Name</label><br>
-        <input type="text" placeholder="e.g. Doe" th:field="*{lastName}">
+        <input type="text" th:field="*{lastName}">
         <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></p>
     </div>
     <div>
         <label for="email">Email</label><br>
-        <input type="email" placeholder="e.g. john_doe@mail.com" th:field="*{email}">
+        <input type="email" th:field="*{email}">
         <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></p>
     </div>
     <div>

@@ -2,12 +2,14 @@ package habsida.spring.boot_security.demo.controller;
 
 import habsida.spring.boot_security.demo.model.Role;
 import habsida.spring.boot_security.demo.model.User;
+import habsida.spring.boot_security.demo.model.UserDTO;
 import habsida.spring.boot_security.demo.repo.RoleRepository;
 import habsida.spring.boot_security.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,28 +63,36 @@ public class AdminController {
     @GetMapping("/edit")
     public String editUser(@RequestParam("id") @ModelAttribute Long id, Model model) throws Exception {
         User user = userService.getUserById(id);
+        UserDTO userToEdit = new UserDTO(user);
         model.addAttribute("id", id);
         model.addAttribute("user", user);
-        model.addAttribute("editUserForm", user);
+        model.addAttribute("editUserForm", userToEdit);
         List<Role> roles = (List<Role>) roleRepository.findAll();
         model.addAttribute("allRoles", roles);
         return "edit";
     }
 
     @PostMapping("/edited")
-    public String postEditUser(@Valid @ModelAttribute("editUserForm") User newUser, BindingResult bindingResult,
+    public String postEditUser(@Valid @ModelAttribute("editUserForm") UserDTO newUser, BindingResult bindingResult,
                                @RequestParam("id") @ModelAttribute Long id, Model model) throws Exception {
+        User user = userService.getUserById(id);
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("id", id);
-            model.addAttribute("user", userService.getUserById(id));
+            model.addAttribute("user", user);
             List<Role> roles = (List<Role>) roleRepository.findAll();
             model.addAttribute("allRoles", roles);
             return "edit";
         }
-        String encodedPassword = encoder.encode(newUser.getPassword());
-        newUser.setPassword(encodedPassword);
-        userService.updateUserById(id, newUser.getFirstName(), newUser.getLastName(), newUser.getEmail(), newUser.getPassword(), newUser.getRoles());
-        return "redirect:/admin/edit?id=" + id.toString();
+
+        if (newUser.getPassword().isEmpty()) {
+            newUser.setPassword(user.getPassword());
+        } else {
+            newUser.setPassword(encoder.encode(newUser.getPassword()));
+        }
+        user.fromUserDTO(newUser);
+        userService.updateUser(user);
+        return "redirect:/admin?id=" + id.toString();
     }
 
     @GetMapping("/delete")

@@ -39,14 +39,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for Email: " + email));
     }
 
-    public void updateUserById(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.get();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRoles(roles);
+    public void updateUser(User user) {
         userRepository.save(user);
     }
 
