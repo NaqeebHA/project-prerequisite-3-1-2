@@ -1,4 +1,4 @@
-package habsida.spring.boot_security.demo.configs;
+package bootstrap_demo.configs;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;

@@ -2,66 +2,91 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Page</title>
+    <title>All Users</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
-<style>
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-
-    td, th {
-        border: 1px solid #000;
-        text-align: left;
-        padding: 8px;
-    }
-
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
-
-    .error {
-        color: red;
-    }
-</style>
 <body>
+<nav class="navbar navbar-dark bg-dark" style="font-size: small">
+    <div class="container-fluid">
+        <span class="navbar-brand" style="font-size: small" th:text="${userDetails.username} + ' with roles ' + ${userDetails.roles}"></span>
+        <a class="nav-link" th:href="@{/logout}">Logout</a>
+    </div>
+</nav>
 
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout" />
-</form><br>
-
-<form th:action="@{/user}" method="get">
-    <input type="submit" value="User Info" />
-</form><br>
-
-<h1>User List</h1>
-
-<table class="table table-bordered table-striped">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-        <th>Roles</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.firstName}"></td>
-        <td th:text="${user.lastName}"></td>
-        <td th:text="${user.email}"></td>
-        <td th:text="${user.roles}"></td>
-        <td><a th:href="@{/admin/edit(id=${user.id})}">Edit</a></td>
-        <td><a th:href="@{/admin/delete(id=${user.id})}">Delete</a></td>
-    </tr>
-    </tbody>
-    <a th:href="@{/admin/add_user}">Add User</a>
-</table>
-
+<div class="container-fluid" style="height: 90vh">
+    <div class="row h-100">
+        <div class="col-2 p-0">
+            <table class="table table-hover border-0">
+                <tbody>
+                <tr class="table-primary border-0">
+                    <td class="border-0 text-center">
+                        <a class="nav-link" th:href="@{/admin}">Admin</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="border-0 text-center">
+                        <a class="nav-link" th:href="@{/user}">User</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-10 bg-light p-0">
+            <div class="container">
+                <div class="row">
+                    <h3 class="m-1">Admin Panel</h3>
+                </div>
+                <div class="col">
+                    <div class="row bg-light mx-1">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="all-users-tab" data-toggle="tab" th:href="@{/admin}" role="tab" aria-controls="allUsers" aria-selected="true">All Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="new-user-tab" data-toggle="tab" th:href="@{/admin/add_user}" role="tab" aria-controls="addUser" aria-selected="false">New User</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row border fw-bold bg-light p-3 mx-1" style="font-size: small; height: max-content">All Users</div>
+                    <div class="row border bg-white mx-1">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead class="table-white">
+                                <tr>
+                                    <th>Id</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.lastName}"></td>
+                                    <td th:text="${user.age}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.roles}"></td>
+                                    <td>
+                                        <a th:href="@{/admin/edit(id=${user.id})}" class="btn btn-warning btn-sm">Edit</a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/admin/delete(id=${user.id})}" class="btn btn-danger btn-sm">Delete</a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

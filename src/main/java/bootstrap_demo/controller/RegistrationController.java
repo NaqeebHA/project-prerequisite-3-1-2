@@ -1,9 +1,9 @@
-package habsida.spring.boot_security.demo.controller;
+package bootstrap_demo.controller;
 
-import habsida.spring.boot_security.demo.model.Role;
-import habsida.spring.boot_security.demo.model.User;
-import habsida.spring.boot_security.demo.repo.RoleRepository;
-import habsida.spring.boot_security.demo.service.UserService;
+import bootstrap_demo.model.Role;
+import bootstrap_demo.model.User;
+import bootstrap_demo.repo.RoleRepository;
+import bootstrap_demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -33,8 +32,6 @@ public class RegistrationController {
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("userRegistrationForm", new User());
-//        List<Role> roles = (List<Role>) roleRepository.findAll();
-//        model.addAttribute("allRoles", roles);
         return "registration";
     }
 

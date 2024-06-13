@@ -1,8 +1,12 @@
-package habsida.spring.boot_security.demo.model;
+package bootstrap_demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+import bootstrap_demo.dto.UserDTO;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,10 +25,14 @@ public class User implements UserDetails {
     @NotEmpty
     private String firstName;
 
-
     @Column(name = "last_name")
     @NotEmpty
     private String lastName;
+
+    @Column(name = "age")
+    @NotNull
+    @Range(min = 0, max = 200)
+    private Integer age;
 
     @Column(name = "email", unique = true)
     @NotEmpty
@@ -43,19 +51,30 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(String firstName, String lastName, String email, String password) {
+    public User(String firstName, String lastName, Integer age, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
     }
 
-    public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
+    public User(String firstName, String lastName, Integer age, String email, String password, Set<Role> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.age = age;
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public void fromUserDTO(UserDTO userDto) {
+        this.firstName = userDto.getFirstName();
+        this.lastName = userDto.getLastName();
+        this.age = userDto.getAge();
+        this.email = userDto.getEmail();
+        this.password = userDto.getPassword();
+        this.roles = userDto.getRoles();
     }
 
     public Long getId() {
@@ -104,6 +123,14 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -118,6 +145,7 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", age='" + age + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }

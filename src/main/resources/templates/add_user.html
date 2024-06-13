@@ -1,59 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Add User Page</title>
+  <meta charset="UTF-8">
+  <title>Add New User</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </head>
-
-<style>
-  .error {
-    color: red;
-  }
-</style>
-
 <body>
+<nav class="navbar navbar-dark bg-dark" style="font-size: small">
+  <div class="container-fluid">
+    <span class="navbar-brand" style="font-size: small" th:text="${userDetails.username} + ' with roles ' + ${userDetails.roles}"></span>
+    <a class="nav-link" th:href="@{/logout}">Logout</a>
+  </div>
+</nav>
 
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Logout" />
-</form><br>
+<div class="container-fluid" style="height: 90vh">
+  <div class="row h-100">
+    <div class="col-2 p-0">
+      <table class="table table-hover border-0">
+        <tbody>
+        <tr class="table-primary border-0">
+          <td class="border-0 text-center">
+            <a class="nav-link" th:href="@{/admin}">Admin</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="border-0 text-center">
+            <a class="nav-link" th:href="@{/user}">User</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-10 bg-light p-0">
+      <div class="container">
+        <div class="row">
+          <h3 class="m-1">Admin Panel</h3>
+        </div>
+        <div class="col">
+          <div class="row bg-light mx-1">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link" id="all-users-tab" data-toggle="tab" th:href="@{/admin}" role="tab" aria-controls="allUsers" aria-selected="true">All Users</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" id="new-user-tab" data-toggle="tab" th:href="@{/admin/add_user}" role="tab" aria-controls="addUser" aria-selected="false">New User</a>
+              </li>
+            </ul>
+          </div>
+          <div class="row border fw-bold bg-light p-3 mx-1" style="font-size: small; height: max-content">Add New User</div>
+          <div class="row border bg-white mx-1 p-3" style="font-size: small">
+            <form th:action="added" th:method="post" th:object="${userForm}">
+              <div class="text-center">
+                <label class="fw-bold">First Name</label><br>
+                <input type="text" th:field="*{firstName}" style="width: 30%">
+                <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <label class="fw-bold">Last Name</label><br>
+                <input type="text" th:field="*{lastName}" style="width: 30%">
+                <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <label class="fw-bold">Age</label><br>
+                <input type="number" th:field="*{age}" style="width: 30%">
+                <p th:if="${#fields.hasErrors('age')}" th:errorclass="error" th:errors="*{age}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <label class="fw-bold">Email</label><br>
+                <input type="email" th:field="*{email}" style="width: 30%">
+                <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <label class="fw-bold">Password</label><br>
+                <input type="password" th:field="*{password}" style="width: 30%">
+                <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <label class="fw-bold">Role</label><br>
+                <select id="roles" name="roles" size="2" style="width: 30%" multiple required>
+                  <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.role}"
+                          th:selected="${role.role=='USER'}"></option>
+                </select>
+                <p th:if="${#fields.hasErrors('roles')}" th:errorclass="error" th:errors="*{roles}" class="text-danger"></p>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-success" type="submit">Add new user</button>
+              </div>
+            </form>
+          </div>
+        </div>
 
-<h1>Add User</h1>
-
-<form th:action="added" th:method="post" th:object="${userForm}">
-  <div>
-    <label for="firstName">First Name</label><br>
-    <input type="text" placeholder="e.g. John" th:field="*{firstName}">
-    <p th:if="${#fields.hasErrors('firstName')}" th:errorclass="error" th:errors="*{firstName}"></p>
+      </div>
+    </div>
   </div>
-  <div>
-    <label for="lastName">Last Name</label><br>
-    <input type="text" placeholder="e.g. Doe" th:field="*{lastName}">
-    <p th:if="${#fields.hasErrors('lastName')}" th:errorclass="error" th:errors="*{lastName}"></p>
-  </div>
-  <div>
-    <label for="email">Email</label><br>
-    <input type="email" placeholder="e.g. john_doe@mail.com" th:field="*{email}">
-    <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></p>
-  </div>
-  <div>
-    <label for="password">Password</label><br>
-    <input type="password" th:field="*{password}">
-    <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
-  </div>
-  <div>
-    <label>Roles:
-      <input type="checkbox" name="roles"
-             th:each="role : ${allRoles}"
-             th:text="${role.role}"
-             th:value="${role.id}"
-             th:field="*{roles}"
-      />
-    </label>
-    <p th:if="${#fields.hasErrors('roles')}" th:errorclass="error" th:errors="*{roles}"></p>
-  </div>
-  <br>
-  <button type="submit">Add User</button>
-</form>
-
+</div>
 </body>
 </html>

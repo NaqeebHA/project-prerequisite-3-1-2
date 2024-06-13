@@ -1,11 +1,11 @@
-package habsida.spring.boot_security.demo.service;
+package bootstrap_demo.service;
 
-import habsida.spring.boot_security.demo.model.Role;
+import bootstrap_demo.model.Role;
+import bootstrap_demo.model.User;
+import bootstrap_demo.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import habsida.spring.boot_security.demo.model.User;
-import habsida.spring.boot_security.demo.repo.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +39,7 @@ public class UserServiceImpl implements UserService{
                 .orElseThrow(() -> new UsernameNotFoundException("User not found for Email: " + email));
     }
 
-    public void updateUserById(Long id, String firstName, String lastName, String email, String password, Set<Role> roles) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        User user = optionalUser.get();
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setRoles(roles);
+    public void updateUser(User user) {
         userRepository.save(user);
     }
 

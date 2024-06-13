@@ -1,9 +1,7 @@
-package habsida.spring.boot_security.demo.repo;
+package bootstrap_demo.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import habsida.spring.boot_security.demo.model.User;
-import org.springframework.stereotype.Repository;
+import bootstrap_demo.model.User;
 
 import java.util.Optional;
 

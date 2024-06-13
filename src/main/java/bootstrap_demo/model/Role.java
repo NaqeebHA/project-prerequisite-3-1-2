@@ -1,4 +1,4 @@
-package habsida.spring.boot_security.demo.model;
+package bootstrap_demo.model;
 
 import javax.persistence.*;
 
