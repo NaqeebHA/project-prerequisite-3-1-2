@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -51,6 +52,13 @@ public class AdminController {
             model.addAttribute("allRoles", roles);
             return "add_user";
         }
+
+        if (newUser.getRoles().isEmpty()) {
+            Role userRole = roleRepository.findByRole("USER").get();
+            List<Role> newRole = List.of(userRole);
+            newUser.setRoles(new HashSet<Role>(newRole));
+        }
+
         String encodedPassword = encoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
         userService.addUser(newUser);
@@ -90,6 +98,11 @@ public class AdminController {
         } else {
             newUser.setPassword(encoder.encode(newUser.getPassword()));
         }
+
+        if (newUser.getRoles().isEmpty()) {
+            newUser.setRoles(user.getRoles());
+        }
+
         user.fromUserDTO(newUser);
         userService.updateUser(user);
         return "redirect:/admin?id=" + id.toString();
