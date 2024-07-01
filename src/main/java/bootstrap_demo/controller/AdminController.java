@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -74,6 +75,13 @@ public class AdminController {
             model.addAttribute("allRoles", roles);
             return "add_user";
         }
+
+        if (newUser.getRoles().isEmpty()) {
+            Role userRole = roleRepository.findByRole("USER").get();
+            List<Role> newRole = List.of(userRole);
+            newUser.setRoles(new HashSet<Role>(newRole));
+        }
+
         String encodedPassword = encoder.encode(newUser.getPassword());
         newUser.setPassword(encodedPassword);
         userService.addUser(newUser);

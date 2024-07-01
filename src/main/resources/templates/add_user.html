@@ -78,7 +78,7 @@
               </div>
               <div class="text-center">
                 <label class="fw-bold">Role</label><br>
-                <select id="roles" name="roles" size="2" style="width: 30%" multiple required>
+                <select id="roles" name="roles" size="2" style="width: 30%" multiple>
                   <option th:each="role : ${allRoles}" th:value="${role.id}" th:text="${role.role}"
                           th:selected="${role.role=='USER'}"></option>
                 </select>
